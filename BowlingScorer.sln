@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BowlingScorer.Tests", "BowlingScorer.Domain\BowlingScorer.Tests.csproj", "{75F8FECA-66C6-4783-A1FA-2976A571BAB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BowlingScorer.Tests", "BowlingScorer.Tests\BowlingScorer.Tests.csproj", "{75F8FECA-66C6-4783-A1FA-2976A571BAB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BowlingScorer", "BowlingScorer\BowlingScorer.csproj", "{FA5FB94F-68C6-467A-9AD0-94EA899B7901}"
 EndProject
