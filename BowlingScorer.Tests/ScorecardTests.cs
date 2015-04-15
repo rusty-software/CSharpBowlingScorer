@@ -18,12 +18,21 @@ namespace BowlingScorer.Tests
         }
 
         [TestMethod]
-        public void CurrentScore_Strike_AddsSimpleSumOfTwoSubsequentRoll()
+        public void CurrentScore_Strike_AddsSimpleSumOfTwoSubsequentFrames()
         {
             var frames = new List<Frame> { new Frame(10), new Frame(4, 5), new Frame(5, 4) };
             var scorecard = new Scorecard() { Frames = frames };
 
             Assert.AreEqual("46", scorecard.CurrentScore);
+        }
+
+        [TestMethod]
+        public void CurrentScore_Spare_AddsSumOfFirstSubsequentRoll()
+        {
+            var frames = new List<Frame> { new Frame(4, 6), new Frame(8, 1), new Frame(5, 4) };
+            var scorecard = new Scorecard() { Frames = frames };
+
+            Assert.AreEqual("36", scorecard.CurrentScore);
         }
     }
 
@@ -41,9 +50,14 @@ namespace BowlingScorer.Tests
             return strikeScore;
         }
 
-        private bool StrikeScoreNeeded(Frame frame)
+        private int ScoreSpareIfNecessary(int curFrame)
         {
-            return frame.Roll1 == 10;
+            var strikeScore = 0;
+            if (curFrame >= 1 && Frames[curFrame - 1].Result == FrameResult.Spare)
+            {
+                strikeScore = 10 + Frames[curFrame - 1].Roll1;
+            }
+            return strikeScore;
         }
 
         public string CurrentScore
@@ -53,13 +67,11 @@ namespace BowlingScorer.Tests
                 var score = 0;
                 for (int curFrame = 0; curFrame < Frames.Count; curFrame ++)
                 {
-                    if (Frames[curFrame].Result != FrameResult.Strike)
+                    if (Frames[curFrame].Result == FrameResult.Miss)
                     {
                         score += ScoreStrikeIfNecessary(curFrame);
+                        score += ScoreSpareIfNecessary(curFrame);
                         score += Frames[curFrame].RollSum;
-                    }
-                    else
-                    {
                     }
                 }
 
