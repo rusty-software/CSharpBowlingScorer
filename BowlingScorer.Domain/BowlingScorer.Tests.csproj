@@ -6,8 +6,8 @@
     <ProjectGuid>{75F8FECA-66C6-4783-A1FA-2976A571BAB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BowlingScorer.Domain</RootNamespace>
-    <AssemblyName>BowlingScorer.Domain</AssemblyName>
+    <RootNamespace>BowlingScorer.Tests</RootNamespace>
+    <AssemblyName>BowlingScorer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="FrameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScorecardTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BowlingScorer\BowlingScorer.csproj">

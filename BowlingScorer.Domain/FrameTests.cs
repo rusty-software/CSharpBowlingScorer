@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BowlingScorer;
 
-namespace BowlingScorer.Domain
+namespace BowlingScorer.Tests
 {
     [TestClass]
     public class FrameTests
