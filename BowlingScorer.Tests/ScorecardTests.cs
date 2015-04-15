@@ -43,7 +43,7 @@ namespace BowlingScorer.Tests
         private int ScoreStrikeIfNecessary(int curFrame)
         {
             var strikeScore = 0;
-            if (curFrame >= 2 && Frames[curFrame - 2].Result == FrameResult.Strike)
+            if (curFrame >= 2 && (Frames[curFrame - 2].Result == FrameResult.Strike))
             {
                 strikeScore = 10 + Frames[curFrame - 1].RollSum + Frames[curFrame].RollSum;
             }
@@ -53,9 +53,9 @@ namespace BowlingScorer.Tests
         private int ScoreSpareIfNecessary(int curFrame)
         {
             var strikeScore = 0;
-            if (curFrame >= 1 && Frames[curFrame - 1].Result == FrameResult.Spare)
+            if (curFrame >= 1 && (Frames[curFrame - 1].Result == FrameResult.Spare))
             {
-                strikeScore = 10 + Frames[curFrame - 1].Roll1;
+                strikeScore = 10 + Frames[curFrame].Roll1;
             }
             return strikeScore;
         }
