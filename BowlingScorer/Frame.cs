@@ -8,19 +8,33 @@ namespace BowlingScorer
 {
     public class Frame
     {
-        public string Result
+        private Dictionary<FrameResult, string> resultMarkMap = new Dictionary<FrameResult, string>
+        {
+            {FrameResult.Strike, "X"}, 
+            {FrameResult.Spare, "{0}/"},
+            {FrameResult.Miss, "{0}[{1}]"}
+        };
+
+        public FrameResult Result
         {
             get
             {
                 if (Roll1 == 10)
                 {
-                    return "X";
+                    return FrameResult.Strike;
                 }
                 else if (RollSum == 10)
                 {
-                    return string.Format("{0}/", Roll1);
+                    return FrameResult.Spare;
                 }
-                return string.Format("{0}-", Roll1);
+                return FrameResult.Miss;
+            }
+        }
+        public string Mark
+        {
+            get
+            {
+                return string.Format(resultMarkMap[Result], Roll1, Roll2);
             }
         }
 
