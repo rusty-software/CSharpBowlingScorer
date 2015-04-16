@@ -33,7 +33,6 @@ namespace BowlingScorer.Tests
             var frames = new List<Frame> { new Frame(4, 6), new Frame(8, 1), new Frame(5, 4) };
             var scorecard = new Scorecard() { Frames = frames };
 
-            // 10+8 + 9 + 9
             Assert.AreEqual("36", scorecard.CurrentScore);
         }
 
@@ -123,6 +122,41 @@ namespace BowlingScorer.Tests
             scorecard.FinalFrame = finalFrame;
 
             Assert.AreEqual("300", scorecard.CurrentScore);
+        }
+
+        [TestMethod]
+        public void RandomGame_ScoresEachFrameCorrectly()
+        {
+            var scorecard = new Scorecard();
+
+            scorecard.Frames.Add(new Frame(8, 1));
+            Assert.AreEqual("9", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(4, 2));
+            Assert.AreEqual("15", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(4, 6));
+            Assert.AreEqual("15", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(10));
+            Assert.AreEqual("35", scorecard.CurrentScore);
+            //scorecard.Frames.Add(new Frame(2, 1));
+            //Assert.AreEqual("35", scorecard.CurrentScore);
+
+            //var frames = new List<Frame>
+            //{
+            //    new Frame(8, 1),
+            //    new Frame(4, 2),
+            //    new Frame(4, 6),
+            //    new Frame(10),
+            //    new Frame(2, 1),
+            //    new Frame(6, 2),
+            //    new Frame(5, 1),
+            //    new Frame(9, 0),
+            //    new Frame(10),
+            //};
+            //var finalFrame = new FinalFrame(new List<int> { 4, 6, 1 });
+            //var scorecard = new Scorecard() { Frames = frames };
+            //scorecard.FinalFrame = finalFrame;
+
+            //Assert.AreEqual("105", scorecard.CurrentScore);
         }
     }
 }

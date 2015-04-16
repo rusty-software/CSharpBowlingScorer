@@ -11,54 +11,39 @@ namespace BowlingScorer
         public List<Frame> Frames { get; set; }
         public FinalFrame FinalFrame { get; set; }
 
-        private int NextTwoApplicableScores(int curFrame)
+        public Scorecard()
+        {
+            Frames = new List<Frame>();
+        }
+
+        private int CalcStrikeScore(int curFrame)
         {
             var score = 0;
-            if ((curFrame < 7) && ((curFrame + 2) <= Frames.Count))
+            if ((curFrame < 7) && ((curFrame + 2) < Frames.Count))
             {
-                score = Frames[curFrame + 1].RollSum + Frames[curFrame + 2].RollSum;
+                score = 10 + Frames[curFrame + 1].RollSum + Frames[curFrame + 2].RollSum;
             } 
-            else if (curFrame == 7 && FinalFrame != null)
+            else if (curFrame == 7 && FinalFrame != null && FinalFrame.Rolls != null && FinalFrame.Rolls.Count >= 1)
             {
-                score = Frames[curFrame + 1].RollSum + FinalFrame.Rolls[0];
+                score = 10 + Frames[curFrame + 1].RollSum + FinalFrame.Rolls[0];
             }
-            else if (curFrame == 8 && FinalFrame != null)
+            else if (curFrame == 8 && FinalFrame != null && FinalFrame.Rolls != null && FinalFrame.Rolls.Count >= 2)
             {
-                score = FinalFrame.Rolls[0] + FinalFrame.Rolls[1];
-            }
-            return score;
-        }
-
-        private int ScoreStrikeIfPossible(int curFrame)
-        {
-            var strikeScore = 0;
-            if (Frames.Count > 2)
-            {
-                strikeScore += 10 + NextTwoApplicableScores(curFrame);
-            }
-            return strikeScore;
-        }
-
-        private int NextApplicableScore(int curFrame)
-        {
-            var score = 0;
-            if (curFrame < 8 && ((curFrame + 1) <= Frames.Count))
-            {
-                score = Frames[curFrame + 1].Roll1;
-            }
-            else if (curFrame == 8 && FinalFrame != null)
-            {
-                score = FinalFrame.Rolls[0];
+                score = 10 + FinalFrame.Rolls[0] + FinalFrame.Rolls[1];
             }
             return score;
         }
 
-        private int ScoreSpareIfPossible(int curFrame)
+        private int CalcSpareScore(int curFrame)
         {
             var score = 0;
-            if (Frames.Count > 1)
+            if (curFrame < 8 && (curFrame + 1) < Frames.Count)
             {
-                score = 10 + NextApplicableScore(curFrame);
+                score = 10 + Frames[curFrame + 1].Roll1;
+            }
+            else if (curFrame == 8 && FinalFrame != null && FinalFrame.Rolls != null && FinalFrame.Rolls.Count >= 1)
+            {
+                score = 10 + FinalFrame.Rolls[0];
             }
             return score;
         }
@@ -68,11 +53,11 @@ namespace BowlingScorer
             var score = 0;
             if (Frames[curFrame].Result == FrameResult.Strike)
             {
-                score = ScoreStrikeIfPossible(curFrame);
+                score = CalcStrikeScore(curFrame);
             }
             else if (Frames[curFrame].Result == FrameResult.Spare)
             {
-                score = ScoreSpareIfPossible(curFrame);
+                score = CalcSpareScore(curFrame);
             }
             else
             {
@@ -95,12 +80,11 @@ namespace BowlingScorer
         {
             get
             {
-                var score = 0;
-                for (int curFrame = 0; curFrame < Frames.Count; curFrame++)
+                var score = ScoreFinalFrame();
+                for (int curFrame = Frames.Count - 1; curFrame >= 0; curFrame--)
                 {
                     score += ScoreFrame(curFrame);
                 }
-                score += ScoreFinalFrame();
                 return score.ToString();
             }
         }
