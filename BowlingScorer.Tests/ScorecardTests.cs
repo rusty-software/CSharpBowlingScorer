@@ -33,6 +33,7 @@ namespace BowlingScorer.Tests
             var frames = new List<Frame> { new Frame(4, 6), new Frame(8, 1), new Frame(5, 4) };
             var scorecard = new Scorecard() { Frames = frames };
 
+            // 10+8 + 9 + 9
             Assert.AreEqual("36", scorecard.CurrentScore);
         }
 
@@ -100,6 +101,28 @@ namespace BowlingScorer.Tests
             scorecard.FinalFrame = finalFrame;
 
             Assert.AreEqual("28", scorecard.CurrentScore);
+        }
+
+        [TestMethod]
+        public void PerfectGame_Scores300()
+        {
+            var frames = new List<Frame>
+            {
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+                new Frame(10),
+            };
+            var finalFrame = new FinalFrame(new List<int> { 10, 10, 10 });
+            var scorecard = new Scorecard() { Frames = frames };
+            scorecard.FinalFrame = finalFrame;
+
+            Assert.AreEqual("300", scorecard.CurrentScore);
         }
     }
 }

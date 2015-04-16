@@ -11,45 +11,85 @@ namespace BowlingScorer
         public List<Frame> Frames { get; set; }
         public FinalFrame FinalFrame { get; set; }
 
-        private int ScoreStrikeIfNecessary(int curFrame)
-        {
-            var strikeScore = 0;
-            if (curFrame >= 2 && (Frames[curFrame - 2].Result == FrameResult.Strike))
-            {
-                strikeScore = 10 + Frames[curFrame - 1].RollSum + Frames[curFrame].RollSum;
-            }
-            return strikeScore;
-        }
-
-        private int ScoreSpareIfNecessary(int curFrame)
-        {
-            var strikeScore = 0;
-            if (curFrame >= 1 && (Frames[curFrame - 1].Result == FrameResult.Spare))
-            {
-                strikeScore = 10 + Frames[curFrame].Roll1;
-            }
-            return strikeScore;
-        }
-
-        private int NinthFrameSpareScore()
+        private int NextTwoApplicableScores(int curFrame)
         {
             var score = 0;
-            if (Frames.Count >= 8 && Frames[8].Result == FrameResult.Spare && FinalFrame != null)
+            if ((curFrame < 7) && ((curFrame + 2) <= Frames.Count))
             {
-                score = 10 + FinalFrame.Rolls.First();
+                score = Frames[curFrame + 1].RollSum + Frames[curFrame + 2].RollSum;
+            } 
+            else if (curFrame == 7 && FinalFrame != null)
+            {
+                score = Frames[curFrame + 1].RollSum + FinalFrame.Rolls[0];
+            }
+            else if (curFrame == 8 && FinalFrame != null)
+            {
+                score = FinalFrame.Rolls[0] + FinalFrame.Rolls[1];
             }
             return score;
         }
 
-        private int NinthFrameStrikeScore()
+        private int ScoreStrikeIfPossible(int curFrame)
+        {
+            var strikeScore = 0;
+            if (Frames.Count > 2)
+            {
+                strikeScore += 10 + NextTwoApplicableScores(curFrame);
+            }
+            return strikeScore;
+        }
+
+        private int NextApplicableScore(int curFrame)
         {
             var score = 0;
-            if (Frames.Count >= 8 && Frames[8].Result == FrameResult.Strike && FinalFrame != null)
+            if (curFrame < 8 && ((curFrame + 1) <= Frames.Count))
             {
-                score = 10 + (FinalFrame.Rolls.First() + FinalFrame.Rolls.Skip(1).First());
+                score = Frames[curFrame + 1].Roll1;
+            }
+            else if (curFrame == 8 && FinalFrame != null)
+            {
+                score = FinalFrame.Rolls[0];
             }
             return score;
         }
+
+        private int ScoreSpareIfPossible(int curFrame)
+        {
+            var score = 0;
+            if (Frames.Count > 1)
+            {
+                score = 10 + NextApplicableScore(curFrame);
+            }
+            return score;
+        }
+
+        private int ScoreFrame(int curFrame)
+        {
+            var score = 0;
+            if (Frames[curFrame].Result == FrameResult.Strike)
+            {
+                score = ScoreStrikeIfPossible(curFrame);
+            }
+            else if (Frames[curFrame].Result == FrameResult.Spare)
+            {
+                score = ScoreSpareIfPossible(curFrame);
+            }
+            else
+            {
+                score = Frames[curFrame].RollSum;
+            }
+            return score;
+        }
+
+        private int ScoreFinalFrame()
+        {
+            var score = 0;
+            if (FinalFrame != null)
+            {
+                score = FinalFrame.RollSum;
+            }
+            return score;
+        } 
 
         public string CurrentScore
         {
@@ -58,16 +98,9 @@ namespace BowlingScorer
                 var score = 0;
                 for (int curFrame = 0; curFrame < Frames.Count; curFrame++)
                 {
-                    if (Frames[curFrame].Result == FrameResult.Miss)
-                    {
-                        score += ScoreStrikeIfNecessary(curFrame);
-                        score += ScoreSpareIfNecessary(curFrame);
-                        score += Frames[curFrame].RollSum;
-                    }
+                    score += ScoreFrame(curFrame);
                 }
-                score += NinthFrameSpareScore();
-                score += NinthFrameStrikeScore();
-                score += (FinalFrame != null) ? FinalFrame.RollSum : 0;
+                score += ScoreFinalFrame();
                 return score.ToString();
             }
         }
