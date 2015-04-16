@@ -9,6 +9,7 @@ namespace BowlingScorer
     public class Scorecard
     {
         public List<Frame> Frames { get; set; }
+        public FinalFrame FinalFrame { get; set; }
 
         private int ScoreStrikeIfNecessary(int curFrame)
         {
@@ -30,6 +31,26 @@ namespace BowlingScorer
             return strikeScore;
         }
 
+        private int NinthFrameSpareScore()
+        {
+            var score = 0;
+            if (Frames.Count >= 8 && Frames[8].Result == FrameResult.Spare && FinalFrame != null)
+            {
+                score = 10 + FinalFrame.Rolls.First();
+            }
+            return score;
+        }
+
+        private int NinthFrameStrikeScore()
+        {
+            var score = 0;
+            if (Frames.Count >= 8 && Frames[8].Result == FrameResult.Strike && FinalFrame != null)
+            {
+                score = 10 + (FinalFrame.Rolls.First() + FinalFrame.Rolls.Skip(1).First());
+            }
+            return score;
+        }
+
         public string CurrentScore
         {
             get
@@ -44,7 +65,9 @@ namespace BowlingScorer
                         score += Frames[curFrame].RollSum;
                     }
                 }
-
+                score += NinthFrameSpareScore();
+                score += NinthFrameStrikeScore();
+                score += (FinalFrame != null) ? FinalFrame.RollSum : 0;
                 return score.ToString();
             }
         }

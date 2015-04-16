@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FinalFrame.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="FrameResult.cs" />
     <Compile Include="Program.cs" />

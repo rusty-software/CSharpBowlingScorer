@@ -35,5 +35,71 @@ namespace BowlingScorer.Tests
 
             Assert.AreEqual("36", scorecard.CurrentScore);
         }
+
+        [TestMethod]
+        public void FullCard_ScoresCorrectly()
+        {
+            var frames = new List<Frame>
+            {
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+                new Frame(4, 5),
+            };
+            var finalFrame = new FinalFrame(new List<int> { 4, 5 });
+            var scorecard = new Scorecard() { Frames = frames };
+            scorecard.FinalFrame = finalFrame;
+
+            Assert.AreEqual("90", scorecard.CurrentScore);
+        }
+
+        [TestMethod]
+        public void NinthFrameSpare_ScoresCorrectly()
+        {
+            var frames = new List<Frame>
+            {
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 10),
+            };
+            var finalFrame = new FinalFrame(new List<int> { 4, 5 });
+            var scorecard = new Scorecard() { Frames = frames };
+            scorecard.FinalFrame = finalFrame;
+
+            Assert.AreEqual("23", scorecard.CurrentScore);
+        }
+
+        [TestMethod]
+        public void NinthFrameStrike_ScoresCorrectly()
+        {
+            var frames = new List<Frame>
+            {
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(0, 0),
+                new Frame(10),
+            };
+            var finalFrame = new FinalFrame(new List<int> { 4, 5 });
+            var scorecard = new Scorecard() { Frames = frames };
+            scorecard.FinalFrame = finalFrame;
+
+            Assert.AreEqual("28", scorecard.CurrentScore);
+        }
     }
 }

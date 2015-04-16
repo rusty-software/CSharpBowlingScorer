@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using BowlingScorer;
 
 namespace BowlingScorer.Tests
 {
@@ -11,7 +12,7 @@ namespace BowlingScorer.Tests
         [TestMethod]
         public void TwoRollsSumLT10_ScoresNoExtraRolls()
         {
-            var rolls = new List<int> { 4, 5 };
+            var rolls = new List<int> { 4, 5, 10 };
             var finalFrame = new FinalFrame(rolls);
 
             Assert.AreEqual(9, finalFrame.RollSum);
@@ -34,22 +35,13 @@ namespace BowlingScorer.Tests
 
             Assert.AreEqual(21, finalFrame.RollSum);
         }
-    }
 
-    public class FinalFrame
-    {
-        private List<int> rolls;
-
-        public int RollSum
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentOutOfRangeException), "Final frame must have at least two rolls!")]
+        public void FinalFrame_RequiresAtLeast2Rolls()
         {
-            get
-            {
-                return rolls.Sum();
-            }
-        }
-        public FinalFrame(List<int> rolls)
-        {
-            this.rolls = rolls;
+            var finalFrame = new FinalFrame(new List<int> { 1 });
         }
     }
+
 }
