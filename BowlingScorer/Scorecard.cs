@@ -19,13 +19,33 @@ namespace BowlingScorer
         private int CalcStrikeScore(int curFrame)
         {
             var score = 0;
-            if ((curFrame < 7) && ((curFrame + 2) < Frames.Count))
+            if (curFrame < 7 && (curFrame + 1) < Frames.Count)
             {
-                score = 10 + Frames[curFrame + 1].RollSum + Frames[curFrame + 2].RollSum;
+                if (Frames[curFrame + 1].Result == FrameResult.Strike)
+                {
+                    if ((curFrame + 2) < Frames.Count)
+                    {
+                        score = 10 + 10 + Frames[curFrame + 2].Roll1;
+                    }
+                }
+                else 
+                {
+                    score = 10 + Frames[curFrame + 1].RollSum;
+                }
             } 
-            else if (curFrame == 7 && FinalFrame != null && FinalFrame.Rolls != null && FinalFrame.Rolls.Count >= 1)
+            else if (curFrame == 7 && (curFrame + 1) < Frames.Count)
             {
-                score = 10 + Frames[curFrame + 1].RollSum + FinalFrame.Rolls[0];
+                if (Frames[curFrame + 1].Result == FrameResult.Strike)
+                {
+                    if (FinalFrame != null && FinalFrame.Rolls != null && FinalFrame.Rolls.Count >= 1)
+                    {
+                        score = 10 + 10 + FinalFrame.Rolls[0];
+                    }
+                }
+                else
+                {
+                    score = 10 + Frames[curFrame + 1].RollSum;
+                }
             }
             else if (curFrame == 8 && FinalFrame != null && FinalFrame.Rolls != null && FinalFrame.Rolls.Count >= 2)
             {

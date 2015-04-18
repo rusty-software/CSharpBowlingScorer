@@ -24,7 +24,7 @@ namespace BowlingScorer.Tests
             var frames = new List<Frame> { new Frame(10), new Frame(4, 5), new Frame(5, 4) };
             var scorecard = new Scorecard() { Frames = frames };
 
-            Assert.AreEqual("46", scorecard.CurrentScore);
+            Assert.AreEqual("37", scorecard.CurrentScore);
         }
 
         [TestMethod]
@@ -137,26 +137,22 @@ namespace BowlingScorer.Tests
             Assert.AreEqual("15", scorecard.CurrentScore);
             scorecard.Frames.Add(new Frame(10));
             Assert.AreEqual("35", scorecard.CurrentScore);
-            //scorecard.Frames.Add(new Frame(2, 1));
-            //Assert.AreEqual("35", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(2, 1));
+            Assert.AreEqual("51", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(6, 2));
+            Assert.AreEqual("59", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(5, 1));
+            Assert.AreEqual("65", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(9, 0));
+            Assert.AreEqual("74", scorecard.CurrentScore);
+            scorecard.Frames.Add(new Frame(10));
+            Assert.AreEqual("74", scorecard.CurrentScore);
 
-            //var frames = new List<Frame>
-            //{
-            //    new Frame(8, 1),
-            //    new Frame(4, 2),
-            //    new Frame(4, 6),
-            //    new Frame(10),
-            //    new Frame(2, 1),
-            //    new Frame(6, 2),
-            //    new Frame(5, 1),
-            //    new Frame(9, 0),
-            //    new Frame(10),
-            //};
-            //var finalFrame = new FinalFrame(new List<int> { 4, 6, 1 });
-            //var scorecard = new Scorecard() { Frames = frames };
-            //scorecard.FinalFrame = finalFrame;
-
-            //Assert.AreEqual("105", scorecard.CurrentScore);
+            var finalFrame = new FinalFrame(new List<int> { 4, 6 });
+            scorecard.FinalFrame = finalFrame;
+            Assert.AreEqual("104", scorecard.CurrentScore);
+            finalFrame.Rolls.Add(1);
+            Assert.AreEqual("105", scorecard.CurrentScore);
         }
     }
 }
